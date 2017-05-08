@@ -1,0 +1,33 @@
+swagger: "2.0"
+info:
+  description: "Rustivi REST API."
+  version: "0.0.0"
+  title: "Rustivi"
+  license:
+    name: "ISC"
+    url: "https://opensource.org/licenses/ISC"
+schemes:
+- "http"
+paths:
+  /time:
+    get:
+      summary: "Get the current reference time."
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/ServerTime"
+definitions:
+  ServerTime:
+    type: "object"
+    properties:
+      timestamp:
+        description: "UNIX timestamp (seconds since 1st January 1970)"
+        type: "integer"
+        format: "int64"
+      useconds:
+        description: "Microseconds since the beginning of the last second."
+        type: "integer"
+        format: "int32"
