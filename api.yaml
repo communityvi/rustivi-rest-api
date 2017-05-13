@@ -1,33 +1,112 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: "Rustivi REST API."
-  version: "0.0.0"
-  title: "Rustivi"
+  description: Rustivi REST API.
+  version: 0.0.0
+  title: Rustivi
   license:
-    name: "ISC"
-    url: "https://opensource.org/licenses/ISC"
+    name: ISC
+    url: 'https://opensource.org/licenses/ISC'
 schemes:
-- "http"
+  - http
 paths:
-  /time:
+  '/room/{name}/users':
+    parameters:
+      - in: path
+        name: name
+        description: Room name
+        type: string
+        required: true
     get:
-      summary: "Get the current reference time."
+      summary: The users that participate in one room.
       produces:
-      - "application/json"
+        - application/json
       responses:
-        200:
+        '200':
+          description: OK
+        '204':
+          description: No Content
+  '/room/{name}':
+    parameters:
+      - in: path
+        name: name
+        description: Room name
+        type: string
+        required: true
+    get:
+      summary: Get information about the room.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+    delete:
+      summary: Deletes the room.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+  /rooms:
+    get:
+      summary: Gets a list of all rooms.
+      produces:
+        - application/json
+      responses:
+        '200':
           description: OK
           schema:
-            $ref: "#/definitions/ServerTime"
+            $ref: '#/definitions/Rooms'
+        '204':
+          description: No Content
+    post:
+      summary: Creates a room.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+  /time/current:
+    get:
+      summary: Get the current reference time.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/ServerTime'
 definitions:
   ServerTime:
-    type: "object"
+    type: object
     properties:
       timestamp:
-        description: "UNIX timestamp (seconds since 1st January 1970)"
-        type: "integer"
-        format: "int64"
+        description: UNIX timestamp (seconds since 1st January 1970)
+        type: integer
+        format: int64
       useconds:
-        description: "Microseconds since the beginning of the last second."
-        type: "integer"
-        format: "int32"
+        description: Microseconds since the beginning of the last second.
+        type: integer
+        format: int32
+  Rooms:
+    type: array
+    items:
+      $ref: '#/definitions/Room'
+  Room:
+    type: object
+    properties:
+      name:
+        description: Name of the room
+        type: string
+        format: string
+  Empty:
+    type: string
+    enum:
+      - ''
